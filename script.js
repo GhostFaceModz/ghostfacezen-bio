@@ -60,6 +60,7 @@
   let mouseX = width / 2, mouseY = height / 2, glowX = mouseX, glowY = mouseY;
   let pointerActive = false, particles = [];
   const video = $('background-video');
+  const ghostVideo = $('ghost-video');
   experience.inert = true;
   $('year').textContent = new Date().getFullYear();
 
@@ -277,6 +278,32 @@
     event.preventDefault(); notify('This social profile is coming soon.');
   }));
 
+  /* =================== KREA VIDEOS: graceful fallback =================== */
+  function watchVideo(v, onFail) {
+    if (!v || !v.addEventListener) return;
+    v.addEventListener('playing', () => v.classList.add('ready'));
+    v.addEventListener('error', onFail, true);
+    // the <source> elements fire the error; the last one failing means no playable source
+    const sources = v.querySelectorAll ? v.querySelectorAll('source') : [];
+    if (sources.length) sources[sources.length - 1].addEventListener('error', onFail);
+  }
+  watchVideo(video, () => video.classList.add('failed'));          // poster image + CSS aurora remain
+  watchVideo(ghostVideo, () => { ghostVideo.classList.remove('ready'); $('splash-ghost').classList.remove('video-on'); }); // transparent still remains
+  if (ghostVideo && ghostVideo.addEventListener) ghostVideo.addEventListener('playing', () => $('splash-ghost').classList.add('video-on'));
+
+  /* =================== DISCORD LIVE COUNTS =================== */
+  const DISCORD_INVITE = 'zenclipsdaily-arc-raiders-store-bloodstrike-1408818003591827539';
+  function loadDiscordCounts() {
+    if (typeof fetch !== 'function' || !$('dc-online')) return;
+    fetch(`https://discord.com/api/v10/invites/${DISCORD_INVITE}?with_counts=true`)
+      .then(r => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then(d => {
+        if (Number.isFinite(d.approximate_presence_count)) $('dc-online').textContent = d.approximate_presence_count.toLocaleString();
+        if (Number.isFinite(d.approximate_member_count)) $('dc-members').textContent = d.approximate_member_count.toLocaleString();
+      })
+      .catch(() => { /* keep the dashes */ });
+  }
+
   /* =================== TYPEWRITER TAGLINES =================== */
   let tagTimer = 0, tagIndex = 0;
   function startTaglines() {
@@ -367,10 +394,12 @@
     cancelAnimationFrame(frameId); lastTime = 0;
     const active = motionEnabled && !document.hidden;
     if (active) frameId = requestAnimationFrame(animate);
-    if (video) {
-      if (active && entered) { const promise = video.play(); if (promise) promise.catch(() => {}); }
-      else video.pause();
-    }
+    // Krea background + splash ghost videos run from page load; Motion off / hidden tab pauses them.
+    [video, ghostVideo].forEach(v => {
+      if (!v) return;
+      if (active) { const promise = v.play && v.play(); if (promise && promise.catch) promise.catch(() => {}); }
+      else if (v.pause) v.pause();
+    });
   }
   function setMotion(enabled) {
     motionEnabled = enabled && CONFIG.effects && !reduced.matches;
@@ -413,5 +442,6 @@
   updateMuteState();
   showMeta();
   updatePlayState();
+  loadDiscordCounts();
   loadYouTubeApi(); // preload so the player is ready by the time "click to enter" is pressed
 })();

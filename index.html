@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#07080d">
+  <meta name="theme-color" content="#07060f">
   <meta name="description" content="GhostFaceZen — gaming, clips and the GhostApps universe. One ghost. A whole universe.">
   <meta property="og:type" content="profile">
   <meta property="og:title" content="GhostFaceZen · Enter the Ghostverse">
   <meta property="og:description" content="Gaming. Creating. Haunting the internet. Explore the GhostApps universe.">
-  <meta property="og:url" content="https://ghostfacemodz.github.io/ghostfacezen-bio/">
-  <meta property="og:image" content="https://ghostfacemodz.github.io/ghostfacezen-bio/assets/og-preview.png">
+  <meta property="og:url" content="https://ghostapps.org/">
+  <meta property="og:image" content="https://ghostapps.org/assets/og-preview.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://ghostfacemodz.github.io/ghostfacezen-bio/assets/og-preview.png">
-  <link rel="canonical" href="https://ghostfacemodz.github.io/ghostfacezen-bio/">
+  <meta name="twitter:image" content="https://ghostapps.org/assets/og-preview.png">
+  <link rel="canonical" href="https://ghostapps.org/">
   <title>GhostFaceZen · Enter the Ghostverse</title>
   <link rel="icon" href="assets/discord-icon.png" type="image/png">
   <!-- Display fonts (Google Fonts). If they can't load, the system fallbacks in style.css are used. -->
@@ -22,6 +22,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
   <link rel="preconnect" href="https://www.youtube.com">
+  <link rel="preload" as="image" href="assets/media/ghost-poster.jpg">
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
@@ -39,52 +40,44 @@
     <symbol id="i-yt" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="m10 8.5 5.5 3.5-5.5 3.5Z"/></symbol>
   </defs></svg>
 
-  <!-- ===== Animated background (always running behind the card; paused by Motion / reduced-motion) ===== -->
+  <!-- ===== Background: Krea nebula video (falls back to poster + CSS aurora) ===== -->
   <div class="scene" aria-hidden="true">
-    <!-- VIDEO HOOK: put a loop at assets/background/background.webm (or .mp4), uncomment below.
-         JS starts it only after entry and pauses it when Motion is off. Keep it muted.
-    <video id="background-video" class="background-video" loop muted playsinline preload="none" poster="assets/og-preview.png">
-      <source src="assets/background/background.webm" type="video/webm">
+    <img class="scene-poster" src="assets/media/bg-poster.jpg" alt="" decoding="async">
+    <video id="background-video" class="background-video" autoplay muted loop playsinline preload="auto" poster="assets/media/bg-poster.jpg">
+      <source src="assets/media/bg-loop.webm" type="video/webm">
+      <source src="assets/media/bg-loop.mp4" type="video/mp4">
     </video>
-    -->
-    <div class="mesh">
-      <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="blob b4"></span>
-    </div>
-    <div class="sweep"></div>
-    <div class="beams"><span class="beam bm1"></span><span class="beam bm2"></span><span class="beam bm3"></span></div>
-    <div class="stars"></div>
+    <div class="mesh"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
     <div class="fog fog-one"></div><div class="fog fog-two"></div>
-    <div class="grid-floor"></div>
     <canvas id="particles"></canvas><div class="grain"></div><div class="vignette"></div>
   </div>
   <div class="cursor-glow" id="cursor-glow" aria-hidden="true"></div>
 
-  <!-- ===== Click-to-enter splash: the ghost floats away on click ===== -->
+  <!-- ===== Cinematic splash ===== -->
   <div class="entrance" id="entrance">
-    <button id="enter-button" class="enter-button" type="button">
+    <div class="splash-top" aria-hidden="true"><svg><use href="#i-ghost"/></svg> GHOST<span>APPS</span></div>
+    <button id="enter-button" class="enter-button" type="button" aria-label="Click to enter GhostFaceZen's profile">
       <span class="splash-ghost" id="splash-ghost">
+        <span class="ghost-halo" aria-hidden="true"></span>
         <span class="ghost-ring" aria-hidden="true"></span><span class="ghost-ring ring-two" aria-hidden="true"></span>
-        <svg class="ghost-art" viewBox="0 0 120 140" aria-hidden="true">
-          <defs>
-            <linearGradient id="gbody" x1="0" y1="0" x2=".5" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cbbcf4"/></linearGradient>
-          </defs>
-          <path class="ghost-body" d="M14 128V58a46 46 0 0 1 92 0v70l-15-11-15 13-16-13-15 13-15-13Z" fill="url(#gbody)"/>
-          <ellipse class="ghost-eye" cx="45" cy="60" rx="7" ry="11" fill="#1b1628"/>
-          <ellipse class="ghost-eye" cx="75" cy="60" rx="7" ry="11" fill="#1b1628"/>
-          <path d="M51 82q9 7 18 0" fill="none" stroke="#6f5c8a" stroke-width="4" stroke-linecap="round"/>
-        </svg>
-        <span class="ghost-shadow" aria-hidden="true"></span>
-        <span class="ghost-tag">click to enter</span>
+        <img class="ghost-still" src="assets/media/ghost-poster.jpg" alt="" aria-hidden="true">
+        <!-- Krea ghost loop on black; the splash layer uses mix-blend-mode:screen so black melts into the background. -->
+        <video class="ghost-video" id="ghost-video" autoplay muted loop playsinline preload="auto" poster="assets/media/ghost-poster.jpg" aria-hidden="true">
+          <source src="assets/media/ghost-loop.webm" type="video/webm">
+          <source src="assets/media/ghost-loop.mp4" type="video/mp4">
+        </video>
       </span>
+      <span class="splash-title" aria-hidden="true">GhostFaceZen</span>
+      <span class="splash-sub">GAMER <i>·</i> CREATOR <i>·</i> GHOST</span>
+      <span class="enter-pill"><span class="ghost-tag">click to enter</span></span>
       <span class="enter-label">tap the ghost · or anywhere</span>
-      <span class="enter-caption">A LITTLE LESS ORDINARY.</span>
     </button>
-    <p class="entrance-note">sound on. world off.</p>
+    <p class="entrance-note">🎧 sound on for the full experience</p>
   </div>
 
   <div id="experience">
     <header class="site-header">
-      <a class="wordmark" href="#profile-name" aria-label="GhostApps home"><svg aria-hidden="true"><use href="#i-ghost"/></svg><span>GHOST<span class="wordmark-light">APPS</span><small>INDEPENDENT BY SPIRIT.</small></span></a>
+      <a class="wordmark" href="#profile-name" aria-label="GhostApps home"><svg aria-hidden="true"><use href="#i-ghost"/></svg><span>GHOST<span class="wordmark-light">APPS</span></span></a>
       <div class="environment-controls" aria-label="Experience settings">
         <button id="mute-toggle" class="utility-button" type="button" aria-label="Mute music" aria-pressed="false"><svg aria-hidden="true"><use href="#i-sound"/></svg><span>Sound</span></button>
         <button id="motion-toggle" class="utility-button" type="button" aria-label="Pause visual motion" aria-pressed="false"><svg aria-hidden="true"><use href="#i-motion"/></svg><span>Motion</span></button>
@@ -96,14 +89,19 @@
         <section class="profile" aria-labelledby="profile-name" id="profile">
           <div class="card-edge" aria-hidden="true"></div>
           <div class="card-shine" aria-hidden="true"></div>
-          <div class="card-banner" aria-hidden="true"><span></span></div>
+
+          <div class="card-banner" aria-hidden="true">
+            <img class="banner-bg" src="assets/media/bg-poster.jpg" alt="">
+            <img class="banner-ghost" src="assets/media/ghost-poster.jpg" alt="">
+            <span class="banner-sheen"></span>
+          </div>
 
           <div class="avatar-wrap reveal" style="--i:0">
             <div class="avatar-ring" id="avatar-ring"></div>
-            <!-- Discord server icon (ZenClipsDaily x GhostApps), downloaded to assets/. Animated WebP with PNG fallback. -->
+            <!-- Discord server icon (ZenClipsDaily x GhostApps). Animated WebP with PNG fallback. -->
             <picture>
               <source srcset="assets/discord-icon.webp" type="image/webp">
-              <img class="avatar" id="avatar" src="assets/discord-icon.png" width="112" height="112" alt="ZenClipsDaily x GhostApps Discord server logo">
+              <img class="avatar" id="avatar" src="assets/discord-icon.png" width="128" height="128" alt="ZenClipsDaily x GhostApps Discord server logo">
             </picture>
             <span class="status-dot" title="Online" aria-hidden="true"></span>
           </div>
@@ -118,15 +116,18 @@
             <p class="handle">@ghostfacezen <span class="dot" aria-hidden="true">•</span> gamer / creator / ghost</p>
             <div class="badges">
               <span class="badge badge-primary"><svg aria-hidden="true"><use href="#i-ghost"/></svg>GhostApps Creator</span>
-              <span class="badge">ZenClipsDaily</span>
+              <span class="badge badge-cyan">ZenClipsDaily</span>
+              <span class="badge badge-pink">UK</span>
             </div>
           </div>
 
-          <!-- EDIT BIO HERE: plain text; shimmer is purely decorative, readable without JavaScript. -->
-          <p class="bio reveal" style="--i:2">Building the GhostApps universe. <span aria-hidden="true">👻</span></p>
-          <p class="micro-bio reveal" style="--i:3"><span id="tagline">Good games. Great stories. Your kind of people.</span><span class="caret" aria-hidden="true"></span></p>
+          <div class="bio-block reveal" style="--i:2">
+            <!-- EDIT BIO HERE -->
+            <p class="bio">Building the GhostApps universe. <span aria-hidden="true">👻</span></p>
+            <p class="micro-bio"><span id="tagline">Good games. Great stories. Your kind of people.</span><span class="caret" aria-hidden="true"></span></p>
+          </div>
 
-          <nav class="socials reveal" style="--i:4" aria-label="Projects and social profiles">
+          <nav class="socials reveal" style="--i:3" aria-label="Projects and social profiles">
             <!-- Order: GhostFlix, GhostGames, Discord | X, Instagram, YouTube. Logos for GhostFlix/GhostGames are the sites' own app icons (assets/). -->
             <a class="social social-app" style="--b:0" href="https://ghostflix.uk" target="_blank" rel="noopener noreferrer" aria-label="GhostFlix — opens in a new tab"><span class="social-icon"><img src="assets/ghostflix-icon.png" width="48" height="48" alt=""></span><span class="social-label">GhostFlix</span><span class="tooltip">GhostFlix ↗</span></a>
             <a class="social social-app social-games" style="--b:1" href="https://ghostgames.app" target="_blank" rel="noopener noreferrer" aria-label="GhostGames — opens in a new tab"><span class="social-icon"><img src="assets/ghostgames-icon.png" width="48" height="48" alt=""></span><span class="social-label">GhostGames</span><span class="tooltip">GhostGames ↗</span></a>
@@ -138,8 +139,32 @@
             <a class="social social-youtube" style="--b:5" href="https://www.youtube.com/@GhostGames_App" target="_blank" rel="noopener noreferrer" aria-label="GhostGames on YouTube — opens in a new tab"><span class="social-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="5"/><path d="m10 9 6 3-6 3Z"/></svg></span><span class="social-label">YouTube</span><span class="tooltip">YouTube ↗</span></a>
           </nav>
 
-          <!-- ===== YouTube-powered music player. Songs are chosen in MUSIC at the top of script.js ===== -->
-          <section class="music-player reveal" style="--i:5" aria-label="Music player">
+          <!-- Featured apps -->
+          <div class="featured reveal" style="--i:4">
+            <a class="feature feature-flix" href="https://ghostflix.uk" target="_blank" rel="noopener noreferrer">
+              <img src="assets/ghostflix-icon.png" width="44" height="44" alt="">
+              <span class="feature-text"><strong>GhostFlix</strong><small>Movies &amp; series, free</small></span>
+              <span class="feature-arrow" aria-hidden="true">↗</span>
+            </a>
+            <a class="feature feature-games" href="https://ghostgames.app" target="_blank" rel="noopener noreferrer">
+              <img src="assets/ghostgames-icon.png" width="44" height="44" alt="">
+              <span class="feature-text"><strong>GhostGames</strong><small>Play in your browser</small></span>
+              <span class="feature-arrow" aria-hidden="true">↗</span>
+            </a>
+          </div>
+
+          <!-- Discord server widget (live counts from Discord's public invite API) -->
+          <a class="discord-card reveal" style="--i:5" href="https://discord.gg/zenclipsdaily-arc-raiders-store-bloodstrike-1408818003591827539" target="_blank" rel="noopener noreferrer" aria-label="Join the ZenClipsDaily x GhostApps Discord server — opens in a new tab">
+            <img class="discord-card-icon" src="assets/discord-icon.png" width="48" height="48" alt="">
+            <span class="discord-card-text">
+              <small>DISCORD SERVER</small>
+              <strong>ZenClipsDaily × GhostApps</strong>
+              <span class="discord-counts"><span class="dc-online"><i></i><b id="dc-online">—</b> online</span><span class="dc-members"><i></i><b id="dc-members">—</b> members</span></span>
+            </span>
+            <span class="discord-join">Join</span>
+          </a>
+
+          <section class="music-player reveal" style="--i:6" aria-label="Music player">
             <div class="track-row">
               <div class="cover-wrap"><img class="cover" id="track-cover" src="assets/cover.svg" alt="" width="56" height="56"><span class="cover-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span></div>
               <div class="track-details">
@@ -161,7 +186,7 @@
             </div>
           </section>
 
-          <div class="profile-bottom reveal" style="--i:6"><span class="local-counter" title="Visits to this page in this browser only. Not a server-wide or unique visitor statistic."><svg aria-hidden="true"><use href="#i-eye"/></svg><span id="view-count">1</span><span>Local visits</span></span><span class="signature">a little haunting. a lot of heart.</span></div>
+          <div class="profile-bottom reveal" style="--i:7"><span class="local-counter" title="Visits to this page in this browser only. Not a server-wide or unique visitor statistic."><svg aria-hidden="true"><use href="#i-eye"/></svg><span id="view-count">1</span><span>Local visits</span></span><span class="signature">a little haunting. a lot of heart.</span></div>
         </section>
         <p class="outside-caption">ONE GHOST. <span>A WHOLE UNIVERSE.</span></p>
       </div>
@@ -172,6 +197,6 @@
   <!-- Hidden/minimised YouTube player. The custom UI above controls it via the IFrame Player API. -->
   <div class="yt-host" aria-hidden="true"><div id="yt-player"></div></div>
   <div class="notice" id="notice" role="status" aria-live="polite"></div>
-  <noscript><style>.entrance{display:none}#experience{display:block}.not-entered main,.not-entered .site-header,.not-entered .site-footer{opacity:1;transform:none}.reveal{opacity:1}</style><p class="noscript-note">Enable JavaScript for music and effects. Project links remain available.</p></noscript>
+  <noscript><style>.entrance{display:none}#experience{display:block}.not-entered main,.not-entered .site-header,.not-entered .site-footer,.not-entered .profile-wrap{opacity:1;transform:none;filter:none}.reveal{opacity:1}</style><p class="noscript-note">Enable JavaScript for music and effects. Project links remain available.</p></noscript>
 </body>
 </html>

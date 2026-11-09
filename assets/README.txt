@@ -1,13 +1,19 @@
 GHOSTAPPS BIO PAGE — ASSETS & EDITING GUIDE
 
 ASSETS
+media/ (Krea-generated art, converted with ffmpeg)
+  ghost-loop.webm / ghost-loop.mp4 — 6s floating ghost loop (720x720, muted). Splash hero. Black background melts away
+                                      because the splash layer uses mix-blend-mode:screen.
+  ghost-poster.jpg                  — still of the hero ghost (poster / fallback, card banner art).
+  bg-loop.webm / bg-loop.mp4        — 6s nebula/fog loop (1280x714, muted). Page background behind everything.
+  bg-poster.jpg                     — still of the nebula (poster / fallback, card banner backdrop).
+  If a video can't play, the poster image + CSS aurora/fog/particles stay visible.
 ghostflix-icon.png  — GhostFlix app icon (192px), from ghostflix.uk/icons/icon-192.png (its web manifest).
 ghostgames-icon.png — GhostGames app icon (192px), from ghostgames.app/ghostgames/icons/icon-192.png.
 discord-icon.webp — ZenClipsDaily x GhostApps Discord server icon (animated WebP, 256px), downloaded from the Discord CDN via the public invite. Used as the profile avatar.
 discord-icon.png  — same icon, static PNG (450px). Fallback for browsers without WebP, and the favicon.
 cover.svg         — placeholder artwork shown until YouTube's thumbnail loads.
-og-preview.png    — 1200x630 share-preview artwork (og:image points at the live GitHub Pages URL).
-background/       — optional video slot (see its README). Not required; the CSS aurora mesh, fog, grid and particles run without it.
+og-preview.png    — 1200x630 share-preview artwork (og:image points at https://ghostapps.org/).
 
 CHOOSING YOUR MUSIC (YouTube, like YouTube Music on Discord)
 Open script.js. At the very top is the MUSIC block:
@@ -52,3 +58,10 @@ EDITING
 - Local visits are a per-page-load count in this browser's localStorage, NOT unique users or a server-wide view count.
 
 Verification: node --check script.js && node --test tests/*.test.cjs
+
+DISCORD WIDGET
+The Discord card shows live online/member counts from Discord's public invite API (no key needed). If that
+request fails, it shows dashes. Invite code: DISCORD_INVITE in script.js.
+
+DOMAIN
+CNAME (repo root) = ghostapps.org for GitHub Pages. canonical/og URLs in index.html use https://ghostapps.org/.
