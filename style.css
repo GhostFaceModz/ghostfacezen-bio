@@ -28,16 +28,17 @@ svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.65;strok
 .background-video{transition:opacity 1.2s}
 .background-video.failed{opacity:0}
 .scene-poster{animation:poster-drift 40s ease-in-out infinite alternate}
-.mesh{position:absolute;inset:-20%;filter:blur(80px) saturate(130%);opacity:.55;mix-blend-mode:screen}
+.bg-playing .scene-poster{animation:none;visibility:hidden}
+.mesh{position:absolute;inset:-20%;opacity:.55;mix-blend-mode:screen}
 .blob{position:absolute;border-radius:50%;will-change:transform}
-.b1{width:50vmax;height:50vmax;left:-5%;top:5%;background:radial-gradient(circle,#7b4dff 0,transparent 65%);animation:mesh-a 22s ease-in-out infinite alternate}
-.b2{width:44vmax;height:44vmax;right:-8%;top:30%;background:radial-gradient(circle,#18b8d8 0,transparent 65%);animation:mesh-b 27s ease-in-out infinite alternate}
-.b3{width:40vmax;height:40vmax;left:25%;bottom:-15%;background:radial-gradient(circle,#e040a8 0,transparent 65%);opacity:.7;animation:mesh-c 31s ease-in-out infinite alternate}
+.b1{width:50vmax;height:50vmax;left:-5%;top:5%;background:radial-gradient(circle,#8a55ff 0,#7b4dff99 22%,#7b4dff33 45%,transparent 68%);animation:mesh-a 22s ease-in-out infinite alternate}
+.b2{width:44vmax;height:44vmax;right:-8%;top:30%;background:radial-gradient(circle,#18c4e6 0,#18b8d899 22%,#18b8d833 45%,transparent 68%);animation:mesh-b 27s ease-in-out infinite alternate}
+.b3{width:40vmax;height:40vmax;left:25%;bottom:-15%;background:radial-gradient(circle,#f044b4 0,#e040a899 22%,#e040a833 45%,transparent 68%);opacity:.7;animation:mesh-c 31s ease-in-out infinite alternate}
 .fog{position:absolute;left:-50%;width:200%;height:50vh;opacity:.5;background:radial-gradient(ellipse 30% 50% at 20% 50%,#d6ccff26,transparent 70%),radial-gradient(ellipse 25% 45% at 55% 60%,#cfeaff1c,transparent 70%),radial-gradient(ellipse 30% 50% at 85% 45%,#d6ccff22,transparent 70%);filter:blur(30px)}
 .fog-one{bottom:-10vh;animation:fog-drift 45s linear infinite}
 .fog-two{bottom:20vh;opacity:.3;animation:fog-drift 75s linear infinite reverse}
 #particles{position:absolute;inset:0;width:100%;height:100%}
-.grain{position:absolute;inset:-50%;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' opacity='.6' d='M0 0h180v180H0z'/%3E%3C/svg%3E");animation:grain 1.2s steps(4) infinite}
+.grain{position:absolute;inset:-6%;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' opacity='.6' d='M0 0h180v180H0z'/%3E%3C/svg%3E");animation:grain 1.2s steps(4) infinite}
 .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 40%,#07060fb0 100%)}
 /* extra dimming behind the splash (the splash layer itself is screen-blended and can't darken) */
 .scene::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 42%,#07060f00 0,#07060f99 80%);opacity:0;transition:opacity 1.2s ease .9s}
@@ -59,18 +60,21 @@ svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.65;strok
 .ghost-halo{position:absolute;inset:14%;border-radius:50%;background:radial-gradient(circle,#8f6cff55 0,#36c8ff22 45%,transparent 70%);filter:blur(24px);animation:halo 4s ease-in-out infinite}
 .ghost-ring{position:absolute;left:50%;top:50%;width:62%;height:62%;transform:translate(-50%,-50%);border-radius:50%;border:1.5px solid #c9b8ff88;box-shadow:0 0 30px #a58cff66,inset 0 0 30px #a58cff44;animation:ring-pulse 3s ease-out infinite;pointer-events:none}
 .ring-two{animation-delay:-1.5s;border-color:#7ee0ff77}
-.splash-title{display:block;font-family:var(--font-display);font-weight:800;font-size:clamp(32px,9.4vw,68px);letter-spacing:-.02em;line-height:1;background:linear-gradient(100deg,#fff 0%,#e5dcff 30%,#b9a6ff 45%,#fff 55%,#bdf0ff 75%,#fff 100%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 22px #9b7bff88);animation:name-shimmer 6s linear infinite}
+.splash-title{display:block;font-family:var(--font-display);font-weight:800;font-size:clamp(32px,9.4vw,68px);letter-spacing:-.02em;line-height:1;background:linear-gradient(100deg,#fff 0%,#e5dcff 30%,#b9a6ff 45%,#fff 55%,#bdf0ff 75%,#fff 100%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;position:relative;animation:name-shimmer 6s linear infinite}
 .splash-sub{display:block;margin-top:12px;font-family:var(--font-label);font-weight:600;font-size:11px;letter-spacing:.42em;color:#cfc6ee}
 .splash-sub i{font-style:normal;color:var(--violet-2);margin:0 .3em}
-.enter-pill{display:inline-block;margin-top:30px;padding:1.5px;border-radius:999px;background:conic-gradient(from var(--edge-angle,0deg),#b9a6ff,#36c8ff,#ff6ad5,#b9a6ff);animation:edge-spin 4s linear infinite,pill-glow 2.2s ease-in-out infinite}
-.ghost-tag{display:block;padding:15px 34px;border-radius:999px;background:#000;font-family:var(--font-display);font-weight:700;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:#fff;white-space:nowrap}
+.pill-wrap{position:relative;display:inline-block;margin-top:30px;border-radius:999px}
+.pill-wrap::before{content:"";position:absolute;inset:0;border-radius:999px;box-shadow:0 0 30px 6px #b48cffcc;opacity:.3;animation:glow-pulse 2.2s ease-in-out infinite}
+.enter-pill{position:relative;display:inline-block;padding:1.5px;border-radius:999px;overflow:hidden;isolation:isolate;box-shadow:0 0 18px #8f6cff66}
+.enter-pill::before{content:"";position:absolute;left:50%;top:50%;width:340px;height:340px;margin:-170px 0 0 -170px;z-index:-1;background:conic-gradient(#b9a6ff,#36c8ff,#ff6ad5,#b9a6ff);animation:spin 4s linear infinite}
+.ghost-tag{position:relative;display:block;padding:15px 34px;border-radius:999px;background:#000;font-family:var(--font-display);font-weight:700;font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:#fff;white-space:nowrap}
 .enter-button:hover .ghost-tag{background:#1a1238}
 .enter-label{display:block;margin-top:14px;font-size:11px;letter-spacing:.22em;color:#a9a2c8}
 .entrance-note{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));margin:0;font-size:11px;letter-spacing:.14em;color:#8e88a8}
 /* float-away */
 .entrance.leaving .splash-ghost{animation:ghost-away 1.6s cubic-bezier(.45,.05,.4,1) forwards}
 .entrance.leaving .ghost-ring,.entrance.leaving .ghost-halo{transition:opacity .4s;opacity:0}
-.entrance.leaving .splash-title,.entrance.leaving .splash-sub,.entrance.leaving .enter-pill,.entrance.leaving .enter-label,.entrance.leaving .entrance-note,.entrance.leaving .splash-top{transition:opacity .55s,transform .7s,filter .7s;opacity:0;transform:translateY(14px);filter:blur(6px);animation:none}
+.entrance.leaving .splash-title,.entrance.leaving .splash-sub,.entrance.leaving .pill-wrap,.entrance.leaving .enter-label,.entrance.leaving .entrance-note,.entrance.leaving .splash-top{transition:opacity .55s,transform .7s,filter .7s;opacity:0;transform:translateY(14px);filter:blur(6px);animation:none}
 .entrance.dismissed{opacity:0;visibility:hidden;pointer-events:none}
 
 /* ===================== CHROME ===================== */
@@ -109,9 +113,13 @@ main{flex:1;display:grid;grid-template-columns:minmax(0,1fr);place-items:start c
 .card-banner{position:relative;height:150px;margin:0 -18px;border-radius:28px 28px 0 0;overflow:hidden;background:#140f26}
 .banner-bg{position:absolute;inset:-10%;width:120%;height:120%;object-fit:cover;animation:banner-pan 26s ease-in-out infinite alternate}
 .banner-ghost{position:absolute;right:-6%;top:-18%;width:62%;mix-blend-mode:screen;opacity:.85;-webkit-mask-image:radial-gradient(circle,#000 45%,transparent 70%);mask-image:radial-gradient(circle,#000 45%,transparent 70%);animation:ghost-bob 6s ease-in-out infinite}
-.banner-sheen{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 35%,rgba(14,11,26,.95)),linear-gradient(105deg,transparent 40%,#ffffff14 50%,transparent 60%);background-size:100% 100%,250% 100%;animation:sheen 7s ease-in-out infinite}
+.banner-sheen{position:absolute;inset:0;overflow:hidden}
+.banner-sheen::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 35%,rgba(14,11,26,.95))}
+.banner-sheen::before{content:"";position:absolute;top:0;bottom:0;left:0;width:250%;background:linear-gradient(105deg,transparent 40%,#ffffff14 50%,transparent 60%);animation:sheen-move 7s ease-in-out infinite}
 .avatar-wrap{position:relative;width:128px;height:128px;margin:-70px auto 0;z-index:3}
-.avatar-ring{position:absolute;inset:-5px;border-radius:50%;background:conic-gradient(from var(--edge-angle,0deg),#b9a6ff,#36c8ff,#ff6ad5,#b9a6ff);animation:edge-spin 6s linear infinite;filter:blur(calc(1px + var(--pulse) * 6px))}
+.avatar-ring{position:absolute;inset:-5px;border-radius:50%;background:conic-gradient(#b9a6ff,#36c8ff,#ff6ad5,#b9a6ff);animation:spin 6s linear infinite;filter:blur(1px)}
+.avatar-wrap::before{content:"";position:absolute;inset:-9px;border-radius:50%;background:conic-gradient(#b9a6ff,#36c8ff,#ff6ad5,#b9a6ff);filter:blur(7px);opacity:0;transition:opacity .4s}
+.is-playing .avatar-wrap::before{animation:beat 1.63s ease-in-out infinite}
 .avatar-ring::after{content:"";position:absolute;inset:-16px;border-radius:50%;background:radial-gradient(circle,#a58cff55,transparent 70%);animation:halo 3.4s ease-in-out infinite}
 .avatar{position:relative;display:block;width:128px;height:128px;border-radius:50%;object-fit:cover;border:5px solid #120f20;background:#120f20}
 .status-dot{position:absolute;right:8px;bottom:10px;width:22px;height:22px;border-radius:50%;background:#3ba55d;border:4px solid #120f20;box-shadow:0 0 14px #3ba55d99}
@@ -119,7 +127,10 @@ main{flex:1;display:grid;grid-template-columns:minmax(0,1fr);place-items:start c
 .name-wrap{position:relative;display:inline-flex;align-items:center}
 h1{margin:0;font-family:var(--font-display);font-weight:800;font-size:clamp(30px,8.6vw,38px);letter-spacing:-.015em;line-height:1.1;
   background:linear-gradient(100deg,#fff 0%,#e5dcff 30%,#b9a6ff 45%,#fff 55%,#cdeeff 75%,#fff 100%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:drop-shadow(0 0 16px #b9a6ff77);animation:name-shimmer 7s linear infinite}
+  position:relative;animation:name-shimmer 7s linear infinite}
+/* the name glow is a static layer behind the shimmering text (a drop-shadow filter re-blurred it every frame) */
+h1::before,.splash-title::before{content:attr(data-text);position:absolute;inset:0;z-index:-1;color:#b9a6ff;-webkit-text-fill-color:#b9a6ff00;text-shadow:0 0 16px #b9a6ffaa;will-change:transform;pointer-events:none}
+.splash-title::before{text-shadow:0 0 22px #9b7bffbb}
 .name-spark{position:absolute;color:#e4dbff;font-size:12px;text-shadow:0 0 10px #c9b8ff;animation:twinkle 2.6s ease-in-out infinite,spark-float 5s ease-in-out infinite}
 .spark-one{left:-18px;top:-4px}.spark-two{right:-16px;bottom:0;animation-delay:-1.3s}
 .spark-three{left:18%;top:-14px;font-size:9px;animation-delay:-.6s}.spark-four{right:22%;top:-12px;font-size:16px;animation-delay:-1.9s}.spark-five{left:-30px;bottom:-4px;font-size:8px;animation-delay:-2.2s}
@@ -262,6 +273,16 @@ body:not(.not-entered) .reveal{animation:reveal-up .8s cubic-bezier(.2,.7,.2,1) 
 @media (max-width:420px){.feature{padding:9px;gap:8px}.feature img{width:38px;height:38px;border-radius:10px}.feature-text strong{font-size:11.5px}.feature-arrow{display:none}}
 @media (max-width:360px){.social{width:44px}.social-icon{width:38px;height:38px}.social-label{font-size:8.5px}.featured{grid-template-columns:1fr}}
 
+/* ===================== PHONES / TOUCH: same look, lighter work ===================== */
+@media (hover:none),(pointer:coarse),(max-width:600px){
+  .profile{background:linear-gradient(180deg,rgba(24,20,42,.74),rgba(10,9,20,.86));backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%)}
+  .card-edge{animation:none;--edge-angle:200deg}
+  .utility-button{backdrop-filter:none;-webkit-backdrop-filter:none;background:#ffffff12}
+}
+/* the splash is gone after entering: stop its animations entirely */
+.entrance.dismissed *{animation:none!important}
+.hidden-tab *,.hidden-tab *::before,.hidden-tab *::after{animation-play-state:paused!important}
+
 /* ===================== MOTION OFF ===================== */
 .motion-off *,.motion-off *::before,.motion-off *::after{animation-play-state:paused!important}
 .motion-off .reveal{animation:none!important;opacity:1!important;transform:none!important}
@@ -281,6 +302,10 @@ body:not(.not-entered) .reveal{animation:reveal-up .8s cubic-bezier(.2,.7,.2,1) 
 @keyframes fog-drift{from{transform:translateX(0)}to{transform:translateX(50%)}}
 @keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}100%{transform:translate(0,0)}}
 @keyframes edge-spin{to{--edge-angle:360deg}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes glow-pulse{0%,100%{opacity:.15}50%{opacity:.8}}
+@keyframes beat{0%,100%{opacity:.25}50%{opacity:.75}}
+@keyframes sheen-move{0%,55%{transform:translateX(-90%)}100%{transform:translateX(36%)}}
 @keyframes ghost-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
 @keyframes halo{0%,100%{opacity:.6;transform:scale(.95)}50%{opacity:1;transform:scale(1.06)}}
 @keyframes ring-pulse{0%{transform:translate(-50%,-50%) scale(.75);opacity:0}25%{opacity:.85}100%{transform:translate(-50%,-50%) scale(1.45);opacity:0}}

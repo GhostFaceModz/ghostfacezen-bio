@@ -59,6 +59,9 @@
   let width = innerWidth, height = innerHeight;
   let mouseX = width / 2, mouseY = height / 2, glowX = mouseX, glowY = mouseY;
   let pointerActive = false, particles = [];
+  // Phones / touch screens get a lighter particle field (fewer dots, lower canvas resolution, 30fps redraw).
+  const lite = matchMedia('(hover: none), (pointer: coarse), (max-width: 600px)').matches;
+  let sprite = null, skipFrame = false;
   const video = $('background-video');
   const ghostVideo = $('ghost-video');
   experience.inert = true;
@@ -267,7 +270,11 @@
     document.body.classList.remove('not-entered');
     $('mute-toggle').focus({ preventScroll: true });
     const delay = motionEnabled ? CONFIG.floatAwayMs : 0;
-    setTimeout(() => entrance.classList.add('dismissed'), delay);
+    setTimeout(() => {
+      entrance.classList.add('dismissed');
+      // The splash ghost is gone: stop decoding its video for good.
+      if (ghostVideo && ghostVideo.pause) ghostVideo.pause();
+    }, delay);
     syncAnimation();
     startTaglines();
   }
@@ -287,7 +294,8 @@
     const sources = v.querySelectorAll ? v.querySelectorAll('source') : [];
     if (sources.length) sources[sources.length - 1].addEventListener('error', onFail);
   }
-  watchVideo(video, () => video.classList.add('failed'));          // poster image + CSS aurora remain
+  watchVideo(video, () => { video.classList.add('failed'); document.body.classList.remove('bg-playing'); });
+  if (video && video.addEventListener) video.addEventListener('playing', () => document.body.classList.add('bg-playing'));          // poster image + CSS aurora remain
   watchVideo(ghostVideo, () => { ghostVideo.classList.remove('ready'); $('splash-ghost').classList.remove('video-on'); }); // transparent still remains
   if (ghostVideo && ghostVideo.addEventListener) ghostVideo.addEventListener('playing', () => $('splash-ghost').classList.add('video-on'));
 
@@ -335,12 +343,28 @@
   function resize() {
     width = innerWidth; height = innerHeight;
     if (!ctx) return;
-    const ratio = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = width * ratio; canvas.height = height * ratio;
+    const ratio = Math.min(window.devicePixelRatio || 1, lite ? 1.5 : 2);
+    canvas.width = Math.round(width * ratio); canvas.height = Math.round(height * ratio);
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-    const number = width < 600 ? 45 : 90;
+    sprite = makeSprite(ratio);
+    const number = lite ? 34 : width < 600 ? 45 : 90;
     particles = Array.from({ length: number }, () => ({ x: Math.random() * width, y: Math.random() * height, r: Math.random() * 1.6 + .4, speed: Math.random() * .22 + .08, drift: Math.random() * Math.PI * 2, alpha: Math.random() * .45 + .25, phase: Math.random() * Math.PI * 2 }));
     drawParticles(0);
+  }
+  // One pre-rendered glowing dot, stamped with drawImage (canvas shadowBlur per dot is very slow on phones).
+  function makeSprite(ratio) {
+    if (typeof document.createElement !== 'function') return null;
+    const c = document.createElement('canvas');
+    if (!c || !c.getContext) return null;
+    const size = 32, g = c.getContext('2d');
+    if (!g) return null;
+    c.width = c.height = Math.ceil(size * ratio);
+    g.scale(ratio, ratio);
+    const grad = g.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+    grad.addColorStop(0, 'rgba(255,252,255,1)'); grad.addColorStop(.12, 'rgba(232,224,255,.95)');
+    grad.addColorStop(.25, 'rgba(195,175,255,.45)'); grad.addColorStop(.55, 'rgba(195,175,255,.12)'); grad.addColorStop(1, 'rgba(195,175,255,0)');
+    g.fillStyle = grad; g.fillRect(0, 0, size, size);
+    return c;
   }
   let shooting = [], nextShot = 2500, clock = 0;
   function drawShootingStars(delta) {
@@ -370,32 +394,39 @@
       p.x += Math.sin(p.drift + p.y * .004) * .06 * delta;
       if (p.y < -8) { p.y = height + 8; p.x = Math.random() * width; }
       const twinkle = .55 + .45 * Math.sin(p.phase + clock * .05);
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(225,218,255,${p.alpha * twinkle})`;
-      ctx.shadowBlur = 9; ctx.shadowColor = '#c3afff'; ctx.fill();
+      if (sprite) {
+        const s = 10 + p.r * 5;
+        ctx.globalAlpha = p.alpha * twinkle;
+        ctx.drawImage(sprite, p.x - s / 2, p.y - s / 2, s, s);
+      } else {
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(225,218,255,${p.alpha * twinkle})`; ctx.fill();
+      }
     }
-    ctx.shadowBlur = 0;
+    ctx.globalAlpha = 1;
     drawShootingStars(delta);
   }
   function animate(now) {
-    const delta = lastTime ? Math.min((now - lastTime) / 16.67, 3) : 1;
+    frameId = requestAnimationFrame(animate);
+    if (lite && (skipFrame = !skipFrame)) return; // 30fps is plenty for slow-drifting dust on phones
+    const delta = lastTime ? Math.min((now - lastTime) / 16.67, 4) : 1;
     lastTime = now;
     drawParticles(delta);
     if (CONFIG.cursorGlow && pointerActive && finePointer.matches && entered) {
       glowX += (mouseX - glowX) * .075; glowY += (mouseY - glowY) * .075;
       glow.style.transform = `translate(${glowX}px,${glowY}px)`;
     }
-    // Gentle "beat" on the avatar ring while music plays (YouTube audio can't be analysed cross-origin).
-    $('avatar-ring').style.setProperty('--pulse', playing ? String(.35 + .35 * Math.sin(now / 260)) : '0');
-    frameId = requestAnimationFrame(animate);
+    // The avatar ring's music "beat" is pure CSS now (.is-playing), so nothing to restyle per frame.
   }
   // The background runs from page load (behind the splash too), not only after entry.
   function syncAnimation() {
     cancelAnimationFrame(frameId); lastTime = 0;
     const active = motionEnabled && !document.hidden;
     if (active) frameId = requestAnimationFrame(animate);
-    // Krea background + splash ghost videos run from page load; Motion off / hidden tab pauses them.
-    [video, ghostVideo].forEach(v => {
+    document.body.classList.toggle('hidden-tab', !!document.hidden);
+    // Krea background video runs from page load; the splash ghost only until you enter.
+    // Motion off / hidden tab pauses them.
+    [video, entered ? null : ghostVideo].forEach(v => {
       if (!v) return;
       if (active) { const promise = v.play && v.play(); if (promise && promise.catch) promise.catch(() => {}); }
       else if (v.pause) v.pause();
