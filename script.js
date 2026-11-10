@@ -264,6 +264,17 @@
     entered = true;
     play(); // inside the user gesture so the browser allows sound
     const entrance = $('entrance');
+    const ghost = $('splash-ghost');
+    if (ghost) {
+      const retireIntroGhost = (event) => {
+        if (event.animationName !== 'ghost-away') return;
+        ghost.removeEventListener('animationend', retireIntroGhost);
+        // Lock the flown-away pose. Dismissing the splash clears other animations;
+        // this ghost must not fall back to its resting spot over the card.
+        ghost.classList.add('flown');
+      };
+      ghost.addEventListener('animationend', retireIntroGhost);
+    }
     entrance.classList.add('leaving');
     entrance.setAttribute('aria-hidden', 'true');
     experience.inert = false;
