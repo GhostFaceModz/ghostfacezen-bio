@@ -73,6 +73,8 @@ svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.65;strok
 .entrance-note{position:absolute;bottom:max(22px,env(safe-area-inset-bottom));margin:0;font-size:11px;letter-spacing:.14em;color:#8e88a8}
 /* float-away */
 .entrance.leaving .splash-ghost{animation:ghost-away 1.6s cubic-bezier(.45,.05,.4,1) forwards}
+/* After ghost-away ends, stay gone. animation:none drops fill-mode:forwards and would snap this ghost back over the card. */
+.splash-ghost.flown{animation:none!important;opacity:0!important;visibility:hidden!important}
 .entrance.leaving .ghost-ring,.entrance.leaving .ghost-halo{transition:opacity .4s;opacity:0}
 .entrance.leaving .splash-title,.entrance.leaving .splash-sub,.entrance.leaving .pill-wrap,.entrance.leaving .enter-label,.entrance.leaving .entrance-note,.entrance.leaving .splash-top{transition:opacity .55s,transform .7s,filter .7s;opacity:0;transform:translateY(14px);filter:blur(6px);animation:none}
 .entrance.dismissed{opacity:0;visibility:hidden;pointer-events:none}
@@ -279,8 +281,11 @@ body:not(.not-entered) .reveal{animation:reveal-up .8s cubic-bezier(.2,.7,.2,1) 
   .card-edge{animation:none;--edge-angle:200deg}
   .utility-button{backdrop-filter:none;-webkit-backdrop-filter:none;background:#ffffff12}
 }
-/* the splash is gone after entering: stop its animations entirely */
-.entrance.dismissed *{animation:none!important}
+/* the splash is gone after entering: stop its animations entirely.
+   Leave .splash-ghost out — clearing ghost-away here drops fill-mode:forwards
+   and the intro ghost snaps back on top of the profile card. .flown hides it
+   once the fly-away actually finishes. */
+.entrance.dismissed *:not(.splash-ghost){animation:none!important}
 .hidden-tab *,.hidden-tab *::before,.hidden-tab *::after{animation-play-state:paused!important}
 
 /* ===================== MOTION OFF ===================== */
