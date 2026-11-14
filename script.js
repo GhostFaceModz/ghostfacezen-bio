@@ -42,7 +42,7 @@
     taglines: [
       'Good games. Great stories. Your kind of people.',
       'Clips, games & movies — all in one ghostly place.',
-      'Home of GhostFlix & GhostGames.',
+      'Home of GhostFlix, GhostGames & GhostChat.',
       'Join the ZenClipsDaily Discord 👻'
     ]
   };

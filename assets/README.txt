@@ -10,6 +10,9 @@ media/ (Krea-generated art, converted with ffmpeg)
   If a video can't play, the poster image + CSS aurora/fog/particles stay visible.
 ghostflix-icon.png  — GhostFlix app icon (192px), from ghostflix.uk/icons/icon-192.png (its web manifest).
 ghostgames-icon.png — GhostGames app icon (192px), from ghostgames.app/ghostgames/icons/icon-192.png.
+ghostchat-icon.png  — GhostChat app icon (192px), from ghostchat-nfoc.onrender.com/icon-192.png.
+ghostlinks-icon.png — GhostLinks app icon (192px), from ghostfacemodz.github.io/ghostlinks/assets/brand/icon-192.png.
+ghostbot-icon.png   — GhostBot Discord avatar (192px), from the public Discord application icon.
 discord-icon.webp — ZenClipsDaily x GhostApps Discord server icon (animated WebP, 256px), downloaded from the Discord CDN via the public invite. Used as the profile avatar.
 discord-icon.png  — same icon, static PNG (450px). Fallback for browsers without WebP, and the favicon.
 cover.svg         — placeholder artwork shown until YouTube's thumbnail loads.

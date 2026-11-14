@@ -152,7 +152,7 @@ h1::before,.splash-title::before{content:attr(data-text);position:absolute;inset
 .caret{display:inline-block;width:1.5px;height:1em;margin-left:2px;vertical-align:-2px;background:#c9b8ff;animation:caret 1s steps(1) infinite}
 
 /* icon row */
-.socials{display:flex;justify-content:center;align-items:flex-start;flex-wrap:nowrap;gap:4px;margin:18px 0 16px}
+.socials{display:flex;justify-content:center;align-items:flex-start;flex-wrap:wrap;gap:4px;margin:18px 0 16px}
 .social{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;width:50px;flex:none;animation:icon-bob 4s ease-in-out infinite;animation-delay:calc(var(--b) * -.6s)}
 .social-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;overflow:hidden;color:#e6e0fa;background:linear-gradient(180deg,#ffffff14,#ffffff05);border:1px solid #ffffff1f;box-shadow:0 1px 0 #ffffff14 inset,0 8px 20px -10px #000;transition:transform .3s cubic-bezier(.3,1.6,.5,1),box-shadow .3s,border-color .3s}
 .social-icon img{width:100%;height:100%;object-fit:cover;display:block}
@@ -165,6 +165,8 @@ h1::before,.splash-title::before{content:attr(data-text);position:absolute;inset
 .social-games .social-icon{border-color:#5fe3ff55;box-shadow:0 0 16px -2px #36c8ff77}
 .social-discord .social-icon{background:#5865f2;color:#fff;border-color:#8b94ff88;box-shadow:0 0 16px -2px #5865f2aa}
 .social-youtube .social-icon{background:#ff0033;color:#fff;border-color:#ff667f88;box-shadow:0 0 16px -2px #ff003399}
+.social-github .social-icon{background:#161b22;color:#fff;border-color:#ffffff33;box-shadow:0 0 16px -2px #000a}
+.social-github .social-icon svg{width:22px;height:22px}
 .social.pending{opacity:.45;animation:none}
 .social.pending:hover .social-icon{transform:none;box-shadow:none;border-color:#ffffff1f}
 .social-divider{display:none}
@@ -177,14 +179,22 @@ h1::before,.splash-title::before{content:attr(data-text);position:absolute;inset
 .feature::before{content:"";position:absolute;inset:0;opacity:.5;z-index:-1;transition:opacity .3s}
 .feature-flix::before{background:radial-gradient(circle at 0% 0%,#8f6cff44,transparent 60%)}
 .feature-games::before{background:radial-gradient(circle at 0% 0%,#36c8ff3a,transparent 60%)}
+.feature-chat::before{background:radial-gradient(circle at 0% 0%,#c084fc44,transparent 60%)}
+.feature-links::before{background:radial-gradient(circle at 0% 0%,#7c5cff3a,transparent 60%)}
+.feature-bot::before{background:radial-gradient(circle at 0% 0%,#4ade803a,transparent 60%)}
+.feature-chat{grid-column:1/-1}
 .feature img{width:44px;height:44px;border-radius:12px;flex:none;box-shadow:0 6px 16px -6px #000}
 .feature-text{display:flex;flex-direction:column;min-width:0;overflow:hidden}
 .feature-text strong{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .feature-text strong{font-family:var(--font-display);font-weight:700;font-size:12.5px;letter-spacing:.01em}
 .feature-text small{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feature-chat .feature-text small{white-space:normal;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical}
 .feature-arrow{margin-left:auto;font-size:13px;color:var(--soft);transition:transform .3s,color .3s}
 .feature:hover{transform:translateY(-3px);border-color:#b9a6ff55;box-shadow:0 14px 30px -14px #8f6cffaa}
 .feature-games:hover{border-color:#36c8ff55;box-shadow:0 14px 30px -14px #36c8ffaa}
+.feature-chat:hover{border-color:#c084fc66;box-shadow:0 14px 30px -14px #c084fcaa}
+.feature-links:hover{border-color:#7c5cff66;box-shadow:0 14px 30px -14px #7c5cffaa}
+.feature-bot:hover{border-color:#4ade8055;box-shadow:0 14px 30px -14px #4ade80aa}
 .feature:hover::before{opacity:1}
 .feature:hover .feature-arrow{transform:translate(2px,-2px);color:#fff}
 
@@ -268,12 +278,13 @@ body:not(.not-entered) .reveal{animation:reveal-up .8s cubic-bezier(.2,.7,.2,1) 
   main{place-items:center;padding:8px 16px 24px}
   .profile{padding:0 26px 22px;border-radius:32px}
   .card-banner{margin:0 -26px;height:170px;border-radius:32px 32px 0 0}
-  .socials{gap:8px}.social{width:56px}.social-icon{width:48px;height:48px}.social-label{font-size:10.5px}
-  .social-divider{display:block;align-self:center;width:1px;height:30px;margin:0 2px 18px;background:var(--line)}
+  .socials{gap:6px}.social{width:54px}.social-icon{width:48px;height:48px}.social-label{font-size:10.5px}
+  .social-divider{display:block;align-self:center;width:1px;height:30px;margin:0 2px 18px;flex-basis:auto;background:var(--line)}
   .profile-bottom{flex-direction:row;justify-content:space-between}
 }
-@media (max-width:420px){.feature{padding:9px;gap:8px}.feature img{width:38px;height:38px;border-radius:10px}.feature-text strong{font-size:11.5px}.feature-arrow{display:none}}
-@media (max-width:360px){.social{width:44px}.social-icon{width:38px;height:38px}.social-label{font-size:8.5px}.featured{grid-template-columns:1fr}}
+@media (max-width:599px){.social-divider{display:block;flex-basis:100%;width:0;height:0;margin:0;overflow:hidden;background:none}}
+@media (max-width:420px){.feature{padding:9px;gap:8px}.feature img{width:38px;height:38px;border-radius:10px}.feature-text strong{font-size:11.5px}.feature-arrow{display:none}.social{width:48px}.social-icon{width:42px;height:42px}.social-label{font-size:9px}}
+@media (max-width:360px){.social{width:44px}.social-icon{width:38px;height:38px}.social-label{font-size:8.5px}.featured{grid-template-columns:1fr}.feature-chat{grid-column:auto}}
 
 /* ===================== PHONES / TOUCH: same look, lighter work ===================== */
 @media (hover:none),(pointer:coarse),(max-width:600px){
