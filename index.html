@@ -50,9 +50,9 @@
 
   <!-- ===== Background: Krea nebula video (falls back to poster + CSS aurora) ===== -->
   <div class="scene" aria-hidden="true">
-    <picture>
+    <picture class="scene-poster">
       <source type="image/webp" srcset="assets/media/bg-poster.webp">
-      <img class="scene-poster" src="assets/media/bg-poster.jpg" alt="" decoding="async" width="1376" height="768">
+      <img src="assets/media/bg-poster.jpg" alt="" decoding="async" width="1376" height="768">
     </picture>
     <video id="background-video" class="background-video" autoplay muted loop playsinline preload="auto" poster="assets/media/bg-poster.jpg">
       <source src="assets/media/bg-loop.webm" type="video/webm">
@@ -71,9 +71,9 @@
       <span class="splash-ghost" id="splash-ghost">
         <span class="ghost-halo" aria-hidden="true"></span>
         <span class="ghost-ring" aria-hidden="true"></span><span class="ghost-ring ring-two" aria-hidden="true"></span>
-        <picture>
+        <picture class="ghost-still">
           <source type="image/webp" srcset="assets/media/ghost-poster.webp">
-          <img class="ghost-still" src="assets/media/ghost-poster.jpg" alt="" aria-hidden="true" width="1024" height="1024">
+          <img src="assets/media/ghost-poster.jpg" alt="" aria-hidden="true" width="1024" height="1024">
         </picture>
         <!-- Krea ghost loop on black; the splash layer uses mix-blend-mode:screen so black melts into the background. -->
         <video class="ghost-video" id="ghost-video" autoplay muted loop playsinline preload="auto" poster="assets/media/ghost-poster.jpg" aria-hidden="true">
@@ -105,13 +105,13 @@
           <div class="card-shine" aria-hidden="true"></div>
 
           <div class="card-banner" aria-hidden="true">
-            <picture>
+            <picture class="banner-bg">
               <source type="image/webp" srcset="assets/media/bg-poster.webp">
-              <img class="banner-bg" src="assets/media/bg-poster.jpg" alt="" width="1376" height="768">
+              <img src="assets/media/bg-poster.jpg" alt="" width="1376" height="768">
             </picture>
-            <picture>
+            <picture class="banner-ghost">
               <source type="image/webp" srcset="assets/media/ghost-poster.webp">
-              <img class="banner-ghost" src="assets/media/ghost-poster.jpg" alt="" width="1024" height="1024">
+              <img src="assets/media/ghost-poster.jpg" alt="" width="1024" height="1024">
             </picture>
             <span class="banner-sheen"></span>
           </div>
