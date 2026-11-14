@@ -30,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
   <link rel="preconnect" href="https://www.youtube.com">
-  <link rel="preload" as="image" href="assets/media/ghost-poster.jpg">
+  <link rel="preload" as="image" href="assets/media/ghost-poster.webp" type="image/webp">
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
@@ -50,7 +50,10 @@
 
   <!-- ===== Background: Krea nebula video (falls back to poster + CSS aurora) ===== -->
   <div class="scene" aria-hidden="true">
-    <img class="scene-poster" src="assets/media/bg-poster.jpg" alt="" decoding="async">
+    <picture>
+      <source type="image/webp" srcset="assets/media/bg-poster.webp">
+      <img class="scene-poster" src="assets/media/bg-poster.jpg" alt="" decoding="async" width="1376" height="768">
+    </picture>
     <video id="background-video" class="background-video" autoplay muted loop playsinline preload="auto" poster="assets/media/bg-poster.jpg">
       <source src="assets/media/bg-loop.webm" type="video/webm">
       <source src="assets/media/bg-loop.mp4" type="video/mp4">
@@ -68,7 +71,10 @@
       <span class="splash-ghost" id="splash-ghost">
         <span class="ghost-halo" aria-hidden="true"></span>
         <span class="ghost-ring" aria-hidden="true"></span><span class="ghost-ring ring-two" aria-hidden="true"></span>
-        <img class="ghost-still" src="assets/media/ghost-poster.jpg" alt="" aria-hidden="true">
+        <picture>
+          <source type="image/webp" srcset="assets/media/ghost-poster.webp">
+          <img class="ghost-still" src="assets/media/ghost-poster.jpg" alt="" aria-hidden="true" width="1024" height="1024">
+        </picture>
         <!-- Krea ghost loop on black; the splash layer uses mix-blend-mode:screen so black melts into the background. -->
         <video class="ghost-video" id="ghost-video" autoplay muted loop playsinline preload="auto" poster="assets/media/ghost-poster.jpg" aria-hidden="true">
           <source src="assets/media/ghost-loop.webm" type="video/webm">
@@ -99,8 +105,14 @@
           <div class="card-shine" aria-hidden="true"></div>
 
           <div class="card-banner" aria-hidden="true">
-            <img class="banner-bg" src="assets/media/bg-poster.jpg" alt="">
-            <img class="banner-ghost" src="assets/media/ghost-poster.jpg" alt="">
+            <picture>
+              <source type="image/webp" srcset="assets/media/bg-poster.webp">
+              <img class="banner-bg" src="assets/media/bg-poster.jpg" alt="" width="1376" height="768">
+            </picture>
+            <picture>
+              <source type="image/webp" srcset="assets/media/ghost-poster.webp">
+              <img class="banner-ghost" src="assets/media/ghost-poster.jpg" alt="" width="1024" height="1024">
+            </picture>
             <span class="banner-sheen"></span>
           </div>
 
@@ -108,8 +120,8 @@
             <div class="avatar-ring" id="avatar-ring"></div>
             <!-- Discord server icon (ZenClipsDaily x GhostApps). Animated WebP with PNG fallback. -->
             <picture>
-              <source srcset="assets/discord-icon.webp" type="image/webp">
-              <img class="avatar" id="avatar" src="assets/discord-icon.png" width="128" height="128" alt="ZenClipsDaily x GhostApps Discord server logo">
+              <source srcset="assets/discord-icon.webp 256w" type="image/webp" sizes="128px">
+              <img class="avatar" id="avatar" src="assets/discord-icon.png" srcset="assets/discord-icon.png 450w" sizes="128px" width="128" height="128" alt="ZenClipsDaily x GhostApps Discord server logo">
             </picture>
             <span class="status-dot" title="Online" aria-hidden="true"></span>
           </div>
@@ -137,8 +149,8 @@
 
           <nav class="socials reveal" style="--i:3" aria-label="Projects and social profiles">
             <!-- Order: GhostFlix, GhostGames, Discord | X, Instagram, YouTube, GitHub. Logos for GhostFlix/GhostGames are the sites' own app icons (assets/). -->
-            <a class="social social-app" style="--b:0" href="https://ghostflix.uk" target="_blank" rel="noopener noreferrer" aria-label="GhostFlix — opens in a new tab"><span class="social-icon"><img src="assets/ghostflix-icon.png" width="48" height="48" alt=""></span><span class="social-label">GhostFlix</span><span class="tooltip">GhostFlix ↗</span></a>
-            <a class="social social-app social-games" style="--b:1" href="https://ghostgames.app" target="_blank" rel="noopener noreferrer" aria-label="GhostGames — opens in a new tab"><span class="social-icon"><img src="assets/ghostgames-icon.png" width="48" height="48" alt=""></span><span class="social-label">GhostGames</span><span class="tooltip">GhostGames ↗</span></a>
+            <a class="social social-app" style="--b:0" href="https://ghostflix.uk" target="_blank" rel="noopener noreferrer" aria-label="GhostFlix — opens in a new tab"><span class="social-icon"><img src="assets/ghostflix-icon.png" srcset="assets/ghostflix-icon.png 1x, assets/ghostflix-icon@2x.webp 2x" width="48" height="48" alt=""></span><span class="social-label">GhostFlix</span><span class="tooltip">GhostFlix ↗</span></a>
+            <a class="social social-app social-games" style="--b:1" href="https://ghostgames.app" target="_blank" rel="noopener noreferrer" aria-label="GhostGames — opens in a new tab"><span class="social-icon"><img src="assets/ghostgames-icon.png" srcset="assets/ghostgames-icon.png 1x, assets/ghostgames-icon@2x.webp 2x" width="48" height="48" alt=""></span><span class="social-label">GhostGames</span><span class="tooltip">GhostGames ↗</span></a>
             <a class="social social-discord" style="--b:2" href="https://discord.gg/zenclipsdaily-arc-raiders-store-bloodstrike-1408818003591827539" target="_blank" rel="noopener noreferrer" aria-label="Join our Discord community — opens in a new tab"><span class="social-icon"><svg class="solid" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg></span><span class="social-label">Discord</span><span class="tooltip">Join the Discord ↗</span></a>
             <span class="social-divider" aria-hidden="true"></span>
             <!-- TODO (X + Instagram): replace href and remove data-soon + aria-disabled when your handles are ready. -->
@@ -151,27 +163,27 @@
           <!-- Featured apps -->
           <div class="featured reveal" style="--i:4">
             <a class="feature feature-flix" href="https://ghostflix.uk" target="_blank" rel="noopener noreferrer" aria-label="GhostFlix — opens in a new tab">
-              <img src="assets/ghostflix-icon.png" width="44" height="44" alt="">
+              <img src="assets/ghostflix-icon.png" srcset="assets/ghostflix-icon.png 1x, assets/ghostflix-icon@2x.webp 2x" width="44" height="44" alt="">
               <span class="feature-text"><strong>GhostFlix</strong><small>Movies &amp; series, free</small></span>
               <span class="feature-arrow" aria-hidden="true">↗</span>
             </a>
             <a class="feature feature-games" href="https://ghostgames.app" target="_blank" rel="noopener noreferrer" aria-label="GhostGames — opens in a new tab">
-              <img src="assets/ghostgames-icon.png" width="44" height="44" alt="">
+              <img src="assets/ghostgames-icon.png" srcset="assets/ghostgames-icon.png 1x, assets/ghostgames-icon@2x.webp 2x" width="44" height="44" alt="">
               <span class="feature-text"><strong>GhostGames</strong><small>Play in your browser</small></span>
               <span class="feature-arrow" aria-hidden="true">↗</span>
             </a>
             <a class="feature feature-chat" href="https://ghostchat-nfoc.onrender.com" target="_blank" rel="noopener noreferrer" aria-label="GhostChat — opens in a new tab">
-              <img src="assets/ghostchat-icon.png" width="44" height="44" alt="">
+              <img src="assets/ghostchat-icon.png" srcset="assets/ghostchat-icon.png 1x, assets/ghostchat-icon@2x.webp 2x" width="44" height="44" alt="">
               <span class="feature-text"><strong>GhostChat</strong><small>Premium AI chat widget for any website, trained on your content, with live human takeover</small></span>
               <span class="feature-arrow" aria-hidden="true">↗</span>
             </a>
             <a class="feature feature-links" href="https://ghostfacemodz.github.io/ghostlinks/" target="_blank" rel="noopener noreferrer" aria-label="GhostLinks — opens in a new tab">
-              <img src="assets/ghostlinks-icon.png" width="44" height="44" alt="">
+              <img src="assets/ghostlinks-icon.png" srcset="assets/ghostlinks-icon.png 1x, assets/ghostlinks-icon@2x.webp 2x" width="44" height="44" alt="">
               <span class="feature-text"><strong>GhostLinks</strong><small>Free animated bio pages</small></span>
               <span class="feature-arrow" aria-hidden="true">↗</span>
             </a>
             <a class="feature feature-bot" href="https://discord.com/oauth2/authorize?client_id=1558950916823195718&amp;permissions=1099804568662&amp;integration_type=0&amp;scope=bot+applications.commands" target="_blank" rel="noopener noreferrer" aria-label="Add GhostBot to a Discord server — opens in a new tab">
-              <img src="assets/ghostbot-icon.png" width="44" height="44" alt="">
+              <img src="assets/ghostbot-icon.png" srcset="assets/ghostbot-icon.png 1x, assets/ghostbot-icon@2x.webp 2x" width="44" height="44" alt="">
               <span class="feature-text"><strong>GhostBot</strong><small>Ranks, giveaways, music and more</small></span>
               <span class="feature-arrow" aria-hidden="true">↗</span>
             </a>

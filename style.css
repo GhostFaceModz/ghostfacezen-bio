@@ -12,7 +12,7 @@
 *{box-sizing:border-box}
 /* NOTE: only <html> gets the base colour; a body background would paint over the z-index:-2 scene. */
 html{min-height:100%;scroll-behavior:smooth;background:var(--base)}
-body{margin:0;min-height:100svh;background:transparent;color:var(--ink);font-family:var(--font-ui);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{margin:0;min-height:100svh;background:transparent;color:var(--ink);font-family:var(--font-ui);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:hidden}
 .not-entered{overflow:hidden}
 button,a,input{-webkit-tap-highlight-color:transparent}
 button,input{font:inherit}button{color:inherit;cursor:pointer;background:none;border:0;padding:0}
@@ -24,7 +24,8 @@ svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.65;strok
 
 /* ===================== BACKGROUND (Krea nebula video + CSS life) ===================== */
 .scene{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:-2;background:#07060f}
-.scene-poster,.background-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.95;filter:saturate(1.15) brightness(1.15)}
+.scene picture,.card-banner picture,.splash-ghost picture{display:contents}
+.scene-poster,.background-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.95;filter:saturate(1.08) brightness(1.08)}
 .background-video{transition:opacity 1.2s}
 .background-video.failed{opacity:0}
 .scene-poster{animation:poster-drift 40s ease-in-out infinite alternate}
@@ -38,7 +39,7 @@ svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.65;strok
 .fog-one{bottom:-10vh;animation:fog-drift 45s linear infinite}
 .fog-two{bottom:20vh;opacity:.3;animation:fog-drift 75s linear infinite reverse}
 #particles{position:absolute;inset:0;width:100%;height:100%}
-.grain{position:absolute;inset:-6%;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' opacity='.6' d='M0 0h180v180H0z'/%3E%3C/svg%3E");animation:grain 1.2s steps(4) infinite}
+.grain{position:absolute;inset:0;opacity:.018;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' opacity='.6' d='M0 0h180v180H0z'/%3E%3C/svg%3E");background-size:180px 180px}
 .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,transparent 40%,#07060fb0 100%)}
 /* extra dimming behind the splash (the splash layer itself is screen-blended and can't darken) */
 .scene::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 42%,#07060f00 0,#07060f99 80%);opacity:0;transition:opacity 1.2s ease .9s}
