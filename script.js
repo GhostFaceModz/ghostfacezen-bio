@@ -187,10 +187,15 @@
   function onReady() {
     ready = true;
     applyVolume();
-    if (usePlaylistId) player.cuePlaylist({ list: MUSIC.PLAYLIST_ID.trim(), listType: 'playlist' });
-    else if (tracks.length) player.cueVideoById(tracks[trackIndex].id);
+    // Enter can win the race against the API. load* starts that video; cue* waits.
+    // playVideo() immediately after cue races the load and can fail the first track.
+    if (usePlaylistId) {
+      const playlist = { list: MUSIC.PLAYLIST_ID.trim(), listType: 'playlist' };
+      if (wantPlay) player.loadPlaylist(playlist); else player.cuePlaylist(playlist);
+    } else if (tracks.length) {
+      if (wantPlay) player.loadVideoById(tracks[trackIndex].id); else player.cueVideoById(tracks[trackIndex].id);
+    }
     showMeta();
-    if (wantPlay) play();
     clearInterval(pollTimer);
     pollTimer = setInterval(updateProgress, 250);
   }
@@ -202,11 +207,22 @@
     showMeta(); updatePlayState(); updateProgress();
   }
   function onError(event) {
-    if (window.console) console.warn('[music] YouTube error', event && event.data, 'on', currentId());
+    const code = event && event.data;
+    if (window.console) console.warn('[music] YouTube error', code, 'on', currentId());
+    const guard = window.ghostPlayerGuard;
+    // 153: the embed request had no Referer. Every track would fail the same way.
+    if (guard && guard.isEmbedConfigurationError(code)) {
+      playing = false;
+      wantPlay = false;
+      updatePlayState();
+      setState('MUSIC UNAVAILABLE');
+      notify('YouTube blocked the player because this page didn’t send a referrer.');
+      return;
+    }
     // 2 bad id, 5 html5 error, 100 removed/private, 101/150 embedding disabled -> skip.
     failures += 1;
     const total = usePlaylistId ? 50 : tracks.length;
-    if (failures >= Math.max(total, 1)) { playing = false; updatePlayState(); setState('MUSIC UNAVAILABLE'); notify('None of the songs could be embedded. Check the IDs in script.js.'); return; }
+    if (failures >= Math.max(total, 1)) { playing = false; updatePlayState(); setState('MUSIC UNAVAILABLE'); notify('YouTube wouldn’t play these songs in the embedded player.'); return; }
     notify('That song can’t play here, skipping to the next one.');
     if (usePlaylistId) player.nextVideo(); else loadTrack(trackIndex + 1, wantPlay);
   }
@@ -221,7 +237,29 @@
       events: { onReady, onStateChange, onError }
     });
   }
+  // YouTube copies placeholder attributes onto its iframe, then may set referrerPolicy
+  // itself, then assigns src. Re-apply our policy in that src assignment so an
+  // http page and an https page both send their origin on the embed request.
+  function installEmbedReferrerGuard() {
+    if (typeof HTMLIFrameElement === 'undefined') return;
+    const desc = Object.getOwnPropertyDescriptor(HTMLIFrameElement.prototype, 'src');
+    if (!desc || !desc.get || !desc.set || desc.set.__ghostReferrer) return;
+    function set(value) {
+      const guard = window.ghostPlayerGuard;
+      const policy = guard && guard.referrerPolicyForUrl(value);
+      if (policy) this.referrerPolicy = policy;
+      return desc.set.call(this, value);
+    }
+    set.__ghostReferrer = true;
+    Object.defineProperty(HTMLIFrameElement.prototype, 'src', {
+      configurable: true,
+      enumerable: desc.enumerable,
+      get: desc.get,
+      set: set
+    });
+  }
   function loadYouTubeApi() {
+    installEmbedReferrerGuard();
     if (window.YT && window.YT.Player) { createPlayer(); return; }
     const previousReady = window.onYouTubeIframeAPIReady;
     window.onYouTubeIframeAPIReady = () => { if (typeof previousReady === 'function') previousReady(); createPlayer(); };

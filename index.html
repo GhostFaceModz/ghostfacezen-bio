@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- YouTube error 153 if an embed is requested with no Referer. This sends the origin from both http and https pages. -->
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <!-- Discord embed colour (sidebar) comes from theme-color. -->
   <meta name="theme-color" content="#8f6cff">
   <meta name="description" content="GhostFaceZen — gaming, clips and the GhostApps universe. One ghost. A whole universe.">
@@ -10,8 +12,8 @@
   <meta property="og:site_name" content="GhostApps">
   <meta property="og:title" content="GhostFaceZen · Enter the Ghostverse">
   <meta property="og:description" content="Gamer · Creator · Ghost. Home of GhostFlix, GhostGames and the ZenClipsDaily Discord. One ghost. A whole universe. 👻">
-  <meta property="og:url" content="http://ghostapps.org/">
-  <!-- Absolute HTTPS image URL (works before ghostapps.org's HTTPS certificate is issued). Bump ?v= after changing the image so Discord refreshes it. -->
+  <meta property="og:url" content="https://ghostapps.org/">
+  <!-- Absolute HTTPS image URL so link previews do not depend on the page scheme. Bump ?v= after changing the image so Discord refreshes it. -->
   <meta property="og:image" content="https://raw.githubusercontent.com/GhostFaceModz/ghostfacezen-bio/main/assets/og-preview.png?v=2">
   <meta property="og:image:secure_url" content="https://raw.githubusercontent.com/GhostFaceModz/ghostfacezen-bio/main/assets/og-preview.png?v=2">
   <meta property="og:image:type" content="image/png">
@@ -32,6 +34,7 @@
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preload" as="image" href="assets/media/ghost-poster.webp" type="image/webp">
   <link rel="stylesheet" href="style.css">
+  <script src="player-guard.js" defer></script>
   <script src="script.js" defer></script>
 </head>
 <body class="not-entered">
@@ -231,7 +234,7 @@
   </div>
 
   <!-- Hidden/minimised YouTube player. The custom UI above controls it via the IFrame Player API. -->
-  <div class="yt-host" aria-hidden="true"><div id="yt-player"></div></div>
+  <div class="yt-host" aria-hidden="true"><div id="yt-player" referrerpolicy="strict-origin-when-cross-origin"></div></div>
   <div class="notice" id="notice" role="status" aria-live="polite"></div>
   <noscript><style>.entrance{display:none}#experience{display:block}.not-entered main,.not-entered .site-header,.not-entered .site-footer,.not-entered .profile-wrap{opacity:1;transform:none;filter:none}.reveal{opacity:1}</style><p class="noscript-note">Enable JavaScript for music and effects. Project links remain available.</p></noscript>
 </body>
